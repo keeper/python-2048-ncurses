@@ -5,16 +5,14 @@ import curses
 import util
 from board import Board
 
-if __name__ == "__main__":
+
+def main(*args, **kwds):
   board = Board(5)
 
-  win = util.InitWindow(100) 
-
-  # These loops fill the pad with letters; this is
-  # explained in the next section
+  win = util.InitWindow(150)
 
   while True:
-    pad = win.subpad(board.size()*2+1, board.size()*2+1, 10, 10)
+    pad = win.subpad(board.size()*2+1, board.size()*5+1, 10, 10)
     util.DrawingTiles(pad, board)
     c = pad.getch()
     if c == ord('q'):
@@ -22,5 +20,7 @@ if __name__ == "__main__":
     else:
       board.NewTile()
 
-  # Displays a section of the pad in the middle of the screen
-util.TerminatedWindow(win)
+  util.TerminatedWindow(win)
+
+if __name__ == "__main__":
+  curses.wrapper(main)

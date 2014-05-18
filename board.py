@@ -1,5 +1,6 @@
 import random
 
+
 class Board:
   def __init__(self, size):
     self.tiles = [[0] * size for i in range(0, size)]
@@ -29,14 +30,14 @@ class Board:
         if self.tiles[row_idx][col_idx] == 0:
           empty_pos_list.append((row_idx, col_idx))
     return empty_pos_list
-  
+
   def NewTile(self):
     empty_pos_list = self.empty_pos()
     if empty_pos_list == []:
       return
     random.shuffle(empty_pos_list)
     new_tile_pos = empty_pos_list[0]
-    self.tiles[new_tile_pos[0]][new_tile_pos[1]] = random.randint(1, 2) * 2
+    self.tiles[new_tile_pos[0]][new_tile_pos[1]] = 2 ** random.randint(1, 2)
 
   def size(self):
     return len(self.tiles)
