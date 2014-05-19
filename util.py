@@ -12,12 +12,11 @@ def InitWindow(size):
 
     for i in range(len(color_list)):
         curses.init_pair(i+1, color_list[i], curses.COLOR_BLACK)
-    window.keypad(1)
     return window
 
 
 def TerminatedWindow(win):
-    win.keypad(0)
+    pass
 
 
 def DrawingTiles(pad, board):

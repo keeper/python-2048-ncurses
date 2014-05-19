@@ -7,7 +7,6 @@ class Board:
         self.NewTile()
         self.NewTile()
 
-
     def __repr__(self):
         content = ""
         for row in self.tiles:
@@ -15,7 +14,6 @@ class Board:
                 content += str(col)
             content += "\n"
         return content
-
 
     def __str__(self):
         content = ""
@@ -25,6 +23,8 @@ class Board:
             content += "\n"
         return content
 
+    def __getitem__(self, index):
+        return self.tiles[index]
 
     def empty_pos(self):
         empty_pos_list = []
@@ -34,22 +34,34 @@ class Board:
                     empty_pos_list.append((row_idx, col_idx))
         return empty_pos_list
 
-
     def NewTile(self):
         empty_pos_list = self.empty_pos()
         if empty_pos_list == []:
             return
         random.shuffle(empty_pos_list)
-        new_tile_pos = empty_pos_list[0]
-        self.tiles[new_tile_pos[0]][new_tile_pos[1]] = 2 ** random.randint(1, 2)
-
+        new_pos_x, new_pos_y = empty_pos_list[0][0], empty_pos_list[0][1]
+        self.tiles[new_pos_x][new_pos_y] = 2 ** random.randint(1, 2)
 
     def size(self):
         return len(self.tiles)
 
-
     def is_full(self):
         return len(self.empty_pos()) == 0
+
+    def MoveUp(self):
+        pass
+
+    def MoveDown(self):
+        pass
+
+    def MoveLeft(self):
+        for row in self.tiles:
+            del row[0]
+            row.append(0)
+        pass
+
+    def MoveRight(self):
+        pass
 
 
 if __name__ == "__main__":
@@ -59,3 +71,4 @@ if __name__ == "__main__":
     print board
     print board.empty_pos()
     print board.is_full()
+    print board[0][1]
