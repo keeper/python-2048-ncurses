@@ -19,9 +19,9 @@ def main(stdscr):
 
     keypad_actions = {
         curses.KEY_UP: board.MoveUp,
+        curses.KEY_DOWN: board.MoveDown,
         curses.KEY_LEFT: board.MoveLeft,
-        curses.KEY_RIGHT: board.MoveRight,
-        curses.KEY_DOWN: board.MoveDown, }
+        curses.KEY_RIGHT: board.MoveRight, }
 
     win.addstr(5, 0, "Score: " + str(board.score))
     pad = win.subpad(
@@ -35,13 +35,14 @@ def main(stdscr):
             if not auto:
                 c = stdscr.getch()
             else:
-                c = autosolver.AutoSolver(board, keypad_actions)
+                c = autosolver.AutoSolver(board, keypad_actions.keys())
             if c == ord('a'):
                 auto = not auto
             if c == ord('q'):
                 return
             else:
                 moved = keypad_actions[c]()
+                board.NewTile()
                 if moved:
                     drawing.DrawingTiles(pad, board)
                     win.addstr(5, 0, "Score: " + str(board.score))
