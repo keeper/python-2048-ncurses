@@ -23,6 +23,9 @@ def main(stdscr):
         curses.KEY_LEFT: board.MoveLeft,
         curses.KEY_RIGHT: board.MoveRight, }
 
+    win.addstr(1, 0, "Arrow keys to move tiles");
+    win.addstr(2, 0, "a to enable auto solver");
+
     win.addstr(5, 0, "Score: " + str(board.score))
     pad = win.subpad(
         board_width, board_length,
@@ -42,8 +45,8 @@ def main(stdscr):
                 return
             else:
                 moved = keypad_actions[c]()
-                board.NewTile()
                 if moved:
+                    board.NewTile()
                     drawing.DrawingTiles(pad, board)
                     win.addstr(5, 0, "Score: " + str(board.score))
                     win.refresh()
