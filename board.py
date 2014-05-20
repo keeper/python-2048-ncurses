@@ -69,7 +69,7 @@ class Board:
 
     def MoveLeft(self):
         orig_size = self.size()
-        moved = False;
+        moved = False
         for row_idx in range(len(self.tiles)):
             orig_row = list(self.tiles[row_idx])
             row = self.tiles[row_idx]
@@ -97,6 +97,25 @@ class Board:
         for row in self.tiles:
             row = row.reverse()
         return moved
+
+    def GameOver(self):
+        size = len(self.tiles)
+        for i in range(size):
+            for j in range(size):
+                cur_tile = self.tiles[i][j]
+                if i != 0:
+                    if cur_tile == self.tiles[i-1][j]:
+                        return False
+                if i < size - 1:
+                    if cur_tile == self.tiles[i+1][j]:
+                        return False
+                if j != 0:
+                    if cur_tile == self.tiles[i][j-1]:
+                        return False
+                if j < size - 1:
+                    if cur_tile == self.tiles[i][j+1]:
+                        return False
+        return True
 
 
 def rotate_cw(tiles):

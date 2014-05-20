@@ -7,7 +7,8 @@ from board import Board
 
 
 def main(stdscr):
-    board = Board(4)
+    size = 4
+    board = Board(size)
 
     win = util.InitWindow(150)
 
@@ -29,8 +30,11 @@ def main(stdscr):
                 return
             else:
                 moved = keypad_action[c]()
-                if moved == True:
+                if moved:
                     board.NewTile()
+                elif len(board.empty_pos()) == 0:
+                    if board.GameOver():
+                        break
                 win.addstr(5, 0, "Score: " + str(board.score))
                 win.refresh()
         except KeyError:
