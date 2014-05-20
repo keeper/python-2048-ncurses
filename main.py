@@ -8,6 +8,8 @@ from board import Board
 
 def main(stdscr):
     size = 4
+    board_length, board_width = size * 5 + 1, size * 2 + 1
+    pad_pos_x, pad_pos_y = 5, 7
     board = Board(size)
 
     win = drawing.InitWindow(150)
@@ -19,7 +21,9 @@ def main(stdscr):
         curses.KEY_DOWN: board.MoveDown, }
 
     win.addstr(5, 0, "Score: " + str(board.score))
-    pad = win.subpad(board.size()*2+1, board.size()*5+1, 7, 5)
+    pad = win.subpad(
+        board_width, board_length,
+        pad_pos_y, pad_pos_x)
     stdscr.refresh()
     win.refresh()
     while True:
@@ -32,11 +36,17 @@ def main(stdscr):
                 moved = keypad_action[c]()
                 if moved:
                     board.NewTile()
-                elif len(board.empty_pos()) == 0:
+                    drawing.DrawingTiles(pad, board)
+                    win.addstr(5, 0, "Score: " + str(board.score))
+                    win.refresh()
+                if len(board.empty_pos()) == 0:
                     if board.GameOver():
-                        break
-                win.addstr(5, 0, "Score: " + str(board.score))
-                win.refresh()
+                        drawing.GameOverMsg(
+                            pad_pos_y + board_width, 0,
+                            board, stdscr)
+                        if stdscr.getch() == ord('r'):
+                            return main(stdscr)
+                        return
         except KeyError:
             pass
 

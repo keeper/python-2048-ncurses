@@ -61,3 +61,10 @@ def ColoringTiles(row, col, board, pad):
         pad.addstr(row*2+2, col*5+1, '-'*4)
         if col < (board.size() - 1):
             pad.addch(row*2+2, (col+1)*5, '+')
+
+
+def GameOverMsg(row, col, board, scr):
+    scr.addstr(
+        row + 2, col,
+        "Game over! Your score is " + str(board.score))
+    scr.addstr(row + 3, col, "Press r to replay, or any key to quit")
