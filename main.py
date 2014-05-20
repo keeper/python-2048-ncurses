@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
 import curses
+import random
 
 import drawing
+import autosolver
 from board import Board
 
 
@@ -11,10 +13,11 @@ def main(stdscr):
     board_length, board_width = size * 5 + 1, size * 2 + 1
     pad_pos_x, pad_pos_y = 5, 7
     board = Board(size)
+    auto = False
 
     win = drawing.InitWindow(150)
 
-    keypad_action = {
+    keypad_actions = {
         curses.KEY_UP: board.MoveUp,
         curses.KEY_LEFT: board.MoveLeft,
         curses.KEY_RIGHT: board.MoveRight,
@@ -29,13 +32,17 @@ def main(stdscr):
     while True:
         drawing.DrawingTiles(pad, board)
         try:
-            c = stdscr.getch()
+            if not auto:
+                c = stdscr.getch()
+            else:
+                c = autosolver.AutoSolver(board, keypad_actions)
+            if c == ord('a'):
+                auto = not auto
             if c == ord('q'):
                 return
             else:
-                moved = keypad_action[c]()
+                moved = keypad_actions[c]()
                 if moved:
-                    board.NewTile()
                     drawing.DrawingTiles(pad, board)
                     win.addstr(5, 0, "Score: " + str(board.score))
                     win.refresh()

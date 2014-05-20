@@ -85,6 +85,7 @@ class Board:
             self.tiles[row_idx] = row
             if row != orig_row:
                 moved = True
+                self.NewTile()
         return moved
 
     def MoveRight(self):
