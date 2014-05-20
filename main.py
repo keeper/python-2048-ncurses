@@ -17,17 +17,22 @@ def main(stdscr):
         curses.KEY_RIGHT: board.MoveRight,
         curses.KEY_DOWN: board.MoveDown, }
 
+    win.addstr(5, 0, "Score: " + str(board.score))
+    pad = win.subpad(board.size()*2+1, board.size()*5+1, 7, 5)
     stdscr.refresh()
+    win.refresh()
     while True:
-        pad = win.subpad(board.size()*2+1, board.size()*5+1, 10, 10)
         util.DrawingTiles(pad, board)
         try:
             c = stdscr.getch()
             if c == ord('q'):
                 return
             else:
-                keypad_action[c]()
-                board.NewTile()
+                moved = keypad_action[c]()
+                if moved == True:
+                    board.NewTile()
+                win.addstr(5, 0, "Score: " + str(board.score))
+                win.refresh()
         except KeyError:
             pass
 

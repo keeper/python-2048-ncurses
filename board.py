@@ -53,43 +53,50 @@ class Board:
         # rotate 90 degree clock-wise
         # then call MoveRight
         rotate_cw(self.tiles)
-        self.MoveRight()
+        moved = self.MoveRight()
         # then rotate ccw back
         rotate_ccw(self.tiles)
+        return moved
 
     def MoveDown(self):
         # rotate 90 degree clock-wise
         # then call MoveLeft
         rotate_cw(self.tiles)
-        self.MoveLeft()
+        moved = self.MoveLeft()
         # then rotate ccw back
         rotate_ccw(self.tiles)
-
+        return moved
 
     def MoveLeft(self):
         orig_size = self.size()
+        moved = False;
         for row_idx in range(len(self.tiles)):
+            orig_row = list(self.tiles[row_idx])
             row = self.tiles[row_idx]
             row = [val for val in row if val != 0]
             for i in range(len(row)-1):
                 if row[i] == row[i+1]:
                     row[i] += row[i+1]
                     row[i+1] = 0
+                    self.score += row[i]
             row = [val for val in row if val != 0]
             for i in range(len(row), orig_size):
                 row.append(0)
             self.tiles[row_idx] = row
-
+            if row != orig_row:
+                moved = True
+        return moved
 
     def MoveRight(self):
         # reverse the row
         # then call MoveLeft
         for row in self.tiles:
             row = row.reverse()
-        self.MoveLeft()
+        moved = self.MoveLeft()
         # reverse back
         for row in self.tiles:
             row = row.reverse()
+        return moved
 
 
 def rotate_cw(tiles):
@@ -105,9 +112,13 @@ def rotate_ccw(tiles):
 
 
 if __name__ == "__main__":
-    board = Board(4)
+    board = Board(2)
     for i in range(4):
         board.NewTile()
     print board
+    board.MoveDown()
+    board.MoveDown()
+    board.MoveDown()
+    board.MoveDown()
     board.MoveDown()
     print board
