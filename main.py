@@ -2,7 +2,7 @@
 
 import curses
 
-import util
+import drawing
 from board import Board
 
 
@@ -10,7 +10,7 @@ def main(stdscr):
     size = 4
     board = Board(size)
 
-    win = util.InitWindow(150)
+    win = drawing.InitWindow(150)
 
     keypad_action = {
         curses.KEY_UP: board.MoveUp,
@@ -23,7 +23,7 @@ def main(stdscr):
     stdscr.refresh()
     win.refresh()
     while True:
-        util.DrawingTiles(pad, board)
+        drawing.DrawingTiles(pad, board)
         try:
             c = stdscr.getch()
             if c == ord('q'):
@@ -40,7 +40,7 @@ def main(stdscr):
         except KeyError:
             pass
 
-    util.TerminatedWindow(win)
+    drawing.TerminatedWindow(win)
 
 if __name__ == "__main__":
     curses.wrapper(main)
