@@ -6,6 +6,7 @@ class Board:
         self.tiles = [[0] * size for i in range(0, size)]
         self.NewTile()
         self.NewTile()
+        self.score = 0
 
     def __repr__(self):
         content = ""
@@ -49,26 +50,64 @@ class Board:
         return len(self.empty_pos()) == 0
 
     def MoveUp(self):
-        pass
+        # rotate 90 degree clock-wise
+        # then call MoveRight
+        rotate_cw(self.tiles)
+        self.MoveRight()
+        # then rotate ccw back
+        rotate_ccw(self.tiles)
 
     def MoveDown(self):
-        pass
+        # rotate 90 degree clock-wise
+        # then call MoveLeft
+        rotate_cw(self.tiles)
+        self.MoveLeft()
+        # then rotate ccw back
+        rotate_ccw(self.tiles)
+
 
     def MoveLeft(self):
-        for row in self.tiles:
-            del row[0]
-            row.append(0)
-        pass
+        orig_size = self.size()
+        for row_idx in range(len(self.tiles)):
+            row = self.tiles[row_idx]
+            row = [val for val in row if val != 0]
+            for i in range(len(row)-1):
+                if row[i] == row[i+1]:
+                    row[i] += row[i+1]
+                    row[i+1] = 0
+            row = [val for val in row if val != 0]
+            for i in range(len(row), orig_size):
+                row.append(0)
+            self.tiles[row_idx] = row
+
 
     def MoveRight(self):
-        pass
+        # reverse the row
+        # then call MoveLeft
+        for row in self.tiles:
+            row = row.reverse()
+        self.MoveLeft()
+        # reverse back
+        for row in self.tiles:
+            row = row.reverse()
+
+
+def rotate_cw(tiles):
+    rotated = zip(*tiles[::-1])
+    for row_idx in range(len(tiles)):
+        tiles[row_idx] = list(rotated[row_idx])
+
+
+def rotate_ccw(tiles):
+    rotated = zip(*tiles)[::-1]
+    for row_idx in range(len(tiles)):
+        tiles[row_idx] = list(rotated[row_idx])
 
 
 if __name__ == "__main__":
-    board = Board(2)
-    for i in range(2):
+    board = Board(4)
+    for i in range(4):
         board.NewTile()
     print board
-    print board.empty_pos()
-    print board.is_full()
-    print board[0][1]
+    board.MoveDown()
+    print board
